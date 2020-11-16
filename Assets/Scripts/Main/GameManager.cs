@@ -56,7 +56,8 @@ public class GameManager
 
     private void StartNewGame()
     {
-        _player.transform.position = new Vector2(0f, 0f);
+        _player.Reset();
+        _cameraController.Restart();
         _mapManager.CreateMap();
         _isGameStarted = true;
         _uiManager.EnterPlaymode();

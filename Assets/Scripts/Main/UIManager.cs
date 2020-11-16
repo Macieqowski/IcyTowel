@@ -6,6 +6,9 @@ public class UIManager : MonoBehaviour
     public Action OnNewGame;
     public Action OnExit;
 
+    public void NewGame() => OnNewGame?.Invoke();
+    public void Exit() => OnExit?.Invoke();
+
     public void EnterPlaymode()
     {
         _mainMenu.SetActive(false);
@@ -20,11 +23,7 @@ public class UIManager : MonoBehaviour
 
     protected void Awake()
     {
-        OnNewGame = _mainMenu.OnNewGame;
-        OnExit = _mainMenu.OnExit;
-
-        _mainMenu.SetActive(true);
-        _hud.SetActive(false);
+        EnterMenu();
     }
 
     [SerializeField]

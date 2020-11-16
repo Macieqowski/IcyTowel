@@ -3,6 +3,10 @@
 [RequireComponent(typeof(Camera))]
 public class CameraController : MonoBehaviour
 {
+    public void Restart()
+    {
+        _camera.transform.position = _followTransform.position;
+    }
     public void InjectTransformToFollow(Transform followTransform)
     {
         _followTransform = followTransform;

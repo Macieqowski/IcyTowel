@@ -17,6 +17,12 @@ public class Player : MonoBehaviour
         _isInAir = true;
     }
 
+    public void Reset()
+    {
+        IsDead = false;
+        transform.position = Vector2.zero;
+    }
+
     public void Move(float horizontalMovementNormalized)
     {
         var newHorizontalVelocity = Vector2.ClampMagnitude(new Vector2(_rigidbody.velocity.x + horizontalMovementNormalized * _moveForce, 0f), _maxHorizontalSpeed);

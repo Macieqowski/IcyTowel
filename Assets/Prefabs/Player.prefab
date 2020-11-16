@@ -99,7 +99,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 0.1
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: 1ea2fa62a1935c847bea15fe6372e854, type: 2}
@@ -139,8 +139,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _jumpForce: 10
-  _moveForce: 15
-  _maxHorizontalSpeed: 6
+  _moveForce: 50
+  _maxHorizontalSpeed: 5
 --- !u!70 &8501901995878012226
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

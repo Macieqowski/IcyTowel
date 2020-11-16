@@ -7,8 +7,18 @@ public class MapManager : MonoBehaviour
     {
         _player = player;
     }
+
     public void CreateMap()
     {
+        while (_floorObjects.Count > 0)
+        {
+            Destroy(_floorObjects.Dequeue());
+        }
+        Destroy(_wallColliders[0]);
+        Destroy(_wallColliders[1]);
+        _currentGenerationYPosition = 0f;
+        _lastLevelWithFloorYPosition = 0f;
+
         var floorLevelGO = _levelFloorProvider.CreateLevelFloor(new Vector2(-MapWidthInUnits / 2f, 0f), _mapWidth, MapWidthInUnits);
         CreateWallColliders();
         _floorObjects.Enqueue(floorLevelGO);
@@ -43,7 +53,10 @@ public class MapManager : MonoBehaviour
                 return;
             }
 
-            _floorObjects.Enqueue(_levelFloorProvider.CreateLevelFloor(new Vector2(0f, _currentGenerationYPosition), 4, MapWidthInUnits));
+            var floorWidth = Random.Range(2, _mapWidth - 3);
+            var position = (-_mapWidth / 2f + floorWidth / 2f) * _levelFloorProvider.TileSize.x;
+
+            _floorObjects.Enqueue(_levelFloorProvider.CreateLevelFloor(new Vector2(position, _currentGenerationYPosition), floorWidth, MapWidthInUnits));
             _currentGenerationYPosition += _levelFloorProvider.TileSize.y;
             _lastLevelWithFloorYPosition = _currentGenerationYPosition;
         }

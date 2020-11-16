@@ -49,3 +49,4 @@ MonoBehaviour:
     type: 3}
   _mapManagerPrefab: {fileID: 5867712822198028450, guid: 389901b68a5969b43913ec237dbe3682,
     type: 3}
+  _uiManagerPrefab: {fileID: 0}

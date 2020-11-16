@@ -4,6 +4,7 @@
 [RequireComponent(typeof(Animator))]
 public class Player : MonoBehaviour
 {
+    public bool IsDead { get; private set; }
     public void Jump()
     {
         if (_isInAir)
@@ -18,13 +19,8 @@ public class Player : MonoBehaviour
 
     public void Move(float horizontalMovementNormalized)
     {
-        var currentHorizontalVelocity = _rigidbody.velocity.x;
-        var newHorizontalVelocity = horizontalMovementNormalized * _moveForce;
-        if (Mathf.Abs(currentHorizontalVelocity + newHorizontalVelocity) > _maxHorizontalSpeed)
-        {
-            return;
-        }
-        _rigidbody.AddForce(new Vector2(newHorizontalVelocity, 0f));
+        var newHorizontalVelocity = Vector2.ClampMagnitude(new Vector2(_rigidbody.velocity.x + horizontalMovementNormalized * _moveForce, 0f), _maxHorizontalSpeed);
+        _rigidbody.AddForce(newHorizontalVelocity);
 
         var angle = Mathf.Atan2(0f, horizontalMovementNormalized) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
@@ -42,11 +38,20 @@ public class Player : MonoBehaviour
         _animator.SetFloat("Speed", speed);
     }
 
-    //todo: sprawdzić co się stanie jak uderzy głową w podłogę od spodu
+    protected void OnBecameInvisible()
+    {
+        IsDead = true;
+    }
+
     protected void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.CompareTag("LevelFloor"))
         {
+            var contactPointNormal = collision.GetContact(0).normal;
+            if (contactPointNormal.y < 0 || contactPointNormal.x != 0)
+            {
+                return;
+            }
             if (_isInAir)
             {
                 _isInAir = false;

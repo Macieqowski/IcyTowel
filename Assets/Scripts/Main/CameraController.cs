@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
 public class CameraController : MonoBehaviour
@@ -17,7 +15,10 @@ public class CameraController : MonoBehaviour
 
     protected void Update()
     {
-        _camera.transform.position = Vector2.Lerp(_camera.transform.position, _followTransform.position, _delay * Time.deltaTime);
+        var y = Mathf.Max(_camera.transform.position.y, _followTransform.position.y);
+
+        _camera.transform.position = Vector2.Lerp(_camera.transform.position, new Vector2(_followTransform.position.x, y), _delay * Time.deltaTime);
+        
     }
 
     [SerializeField]

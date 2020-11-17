@@ -141,6 +141,7 @@ MonoBehaviour:
   _jumpForce: 10
   _moveForce: 50
   _maxHorizontalSpeed: 5
+  _airTorque: 0.8
 --- !u!70 &8501901995878012226
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

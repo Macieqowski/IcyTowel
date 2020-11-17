@@ -30,6 +30,7 @@ public class Player : MonoBehaviour
     {
         IsDead = false;
         transform.position = new Vector2(0f, 0.3f);
+        _rigidbody.AddForce(_rigidbody.velocity * -1f, ForceMode2D.Impulse);
     }
 
     public void Move(float horizontalMovementNormalized)
@@ -49,6 +50,11 @@ public class Player : MonoBehaviour
 
     protected void Update()
     {
+        if (_isInAir)
+        {
+            _rigidbody.AddForce(new Vector2(_rigidbody.velocity.x * -1f * _airTorque, 0f));
+        }
+
         var speed = _isInAir ? 0f : Mathf.Abs(_rigidbody.velocity.x);
         _animator.SetFloat("Speed", speed);
         if (_recentCollisions.Count > _renderDistance * 2 - 1)
@@ -99,6 +105,9 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private float _maxHorizontalSpeed = default;
+
+    [SerializeField]
+    private float _airTorque = default;
 
     private Rigidbody2D _rigidbody;
     private Animator _animator;

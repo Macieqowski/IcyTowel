@@ -12,7 +12,7 @@ public class Starter : MonoBehaviour
         _mapManager = Instantiate(_mapManagerPrefab).GetComponent<MapManager>();
         _mapManager.Inject(_player);
         _inputManager = new InputManager();
-        _uiManager = _uiManagerPrefab.GetComponent<UIManager>();
+        _uiManager = Instantiate(_uiManagerPrefab).GetComponent<UIManager>();
         _gameManager = new GameManager(_player, _cameraController, _mapManager, _assetManager, _inputManager, _uiManager);
     }
 

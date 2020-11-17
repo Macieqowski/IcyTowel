@@ -1,10 +1,19 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
 public class Player : MonoBehaviour
 {
     public bool IsDead { get; private set; }
+
+    public int LevelsVisited { get; private set; }
+
+    public void SetRenderDistance(int renderDistance)
+    {
+        _renderDistance = renderDistance;
+        _recentCollisions = new Queue<Transform>(2 * _renderDistance);
+    }
     public void Jump()
     {
         if (_isInAir)
@@ -20,7 +29,7 @@ public class Player : MonoBehaviour
     public void Reset()
     {
         IsDead = false;
-        transform.position = Vector2.zero;
+        transform.position = new Vector2(0f, 0.3f);
     }
 
     public void Move(float horizontalMovementNormalized)
@@ -42,6 +51,10 @@ public class Player : MonoBehaviour
     {
         var speed = _isInAir ? 0f : Mathf.Abs(_rigidbody.velocity.x);
         _animator.SetFloat("Speed", speed);
+        if (_recentCollisions.Count > _renderDistance * 2 - 1)
+        {
+            _recentCollisions.Dequeue();
+        }
     }
 
     protected void OnBecameInvisible()
@@ -63,6 +76,18 @@ public class Player : MonoBehaviour
                 _isInAir = false;
                 _animator.SetTrigger("EndJump");
             }
+            if (_recentCollisions.Contains(collision.transform.parent))
+            {
+                return;
+            }
+            _recentCollisions.Enqueue(collision.transform.parent);
+            LevelsVisited++;
+        }
+
+        if (collision.collider.CompareTag("Bullet"))
+        {
+            IsDead = true;
+            LevelsVisited = 0;
         }
     }
 
@@ -77,6 +102,8 @@ public class Player : MonoBehaviour
 
     private Rigidbody2D _rigidbody;
     private Animator _animator;
+    private Queue<Transform> _recentCollisions;
+    private int _renderDistance;
 
     private bool _isInAir;
 }

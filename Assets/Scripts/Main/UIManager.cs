@@ -6,6 +6,15 @@ public class UIManager : MonoBehaviour
     public Action OnNewGame;
     public Action OnExit;
 
+    public int DistanceTravelled
+    {
+        set => _hud.DistanceTravelled = $"{value}";
+    }
+    public float TimeElapsed 
+    {
+        set => _hud.TimeElapsed = $"{((int)(value / 60))}:{(value % 60).ToString("F2")}";
+    }
+
     public void NewGame() => OnNewGame?.Invoke();
     public void Exit() => OnExit?.Invoke();
 

@@ -18,7 +18,7 @@ public class Starter : MonoBehaviour
 
     protected void Update()
     {
-        _gameManager.OnUpdate(Time.deltaTime);
+        _gameManager.OnUpdate();
     }
     protected void OnDestroy()
     {

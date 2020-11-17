@@ -43,6 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8a90d34666915a4d8303f04bc16be68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemyPrefab: {fileID: 4901305602972183347, guid: c6e59a6c57ba1074bb96840357482fdf,
+    type: 3}
   _leftTilePrefab: {fileID: 1966966677980922500, guid: 9deca045d36c0ad448709eb0afa81130,
     type: 3}
   _middleTilePrefab: {fileID: 781918151862268684, guid: a8e56ada1611a7d40ac50faeb17bab2e,

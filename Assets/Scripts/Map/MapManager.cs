@@ -6,6 +6,7 @@ public class MapManager : MonoBehaviour
     public void Inject(Player player)
     {
         _player = player;
+        _player.SetRenderDistance(_renderDistance);
     }
 
     public void CreateMap()
@@ -54,19 +55,30 @@ public class MapManager : MonoBehaviour
             }
 
             var floorWidth = Random.Range(2, _mapWidth - 3);
-            var position = (-_mapWidth / 2f + floorWidth / 2f) * _levelFloorProvider.TileSize.x;
+            var position = (-_mapWidth / 2f + floorWidth / 2f + 1f) * _levelFloorProvider.TileSize.x;
+
+            var shouldCreateEnemy = Random.Range(0, 2) > 0;
 
             _floorObjects.Enqueue(_levelFloorProvider.CreateLevelFloor(new Vector2(position, _currentGenerationYPosition), floorWidth, MapWidthInUnits));
+            if (shouldCreateEnemy)
+            {
+                var xPos = Random.Range(0.2f, 0.9f);
+                var positionForEnemy = position + xPos * floorWidth * _levelFloorProvider.TileSize.x;
+                _floorObjects.Enqueue(Instantiate(_enemyPrefab, new Vector2(positionForEnemy, _currentGenerationYPosition + _levelFloorProvider.TileSize.y + 0.1f), Quaternion.identity));
+            }
             _currentGenerationYPosition += _levelFloorProvider.TileSize.y;
             _lastLevelWithFloorYPosition = _currentGenerationYPosition;
         }
 
-        if (_floorObjects.Count > 2 * _renderDistance)
+        if (_floorObjects.Count > 3 * _renderDistance)
         {
             Destroy(_floorObjects.Dequeue());
             ShrinkWallColliders();
         }
     }
+
+    [SerializeField]
+    private GameObject _enemyPrefab = default;
 
     [SerializeField]
     private GameObject _leftTilePrefab = default;
@@ -93,7 +105,7 @@ public class MapManager : MonoBehaviour
     private int _mapWidth = default;
 
     [SerializeField]
-    private float _renderDistance = default;
+    private int _renderDistance = default;
 
     [SerializeField]
     private float _floorSpacing = default;

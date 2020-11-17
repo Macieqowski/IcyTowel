@@ -21,4 +21,9 @@ public class InputManager
     {
         return Input.GetKeyDown(key);
     }
+
+    public bool GetKeyPressed(string key)
+    {
+        return Input.GetButtonDown(key);
+    }
 }

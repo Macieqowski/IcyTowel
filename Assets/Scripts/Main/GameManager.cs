@@ -15,14 +15,16 @@ public class GameManager
         _uiManager.OnExit += Exit;
     }
 
-    public void OnUpdate(float deltaTime)
+    public void OnUpdate()
     {
         if (_isGameStarted)
         {
+            _timeSinceStart += Time.deltaTime;
             if (_player.IsDead)
             {
                 _isGameStarted = false;
                 _uiManager.EnterMenu();
+                _timeSinceStart = 0f;
             }
             var movement = _inputManager.GetHorizontalAxis();
             if (Mathf.Abs(movement) > IgnorableValue)
@@ -30,10 +32,13 @@ public class GameManager
                 _player.Move(movement);
             }
 
-            if (_inputManager.GetKeyPressed(JumpButton))
+            if (_inputManager.GetKeyPressed("Jump"))
             {
                 _player.Jump();
             }
+
+            _uiManager.TimeElapsed = _timeSinceStart;
+            _uiManager.DistanceTravelled = _player.LevelsVisited;
         }
     }
 
@@ -44,7 +49,6 @@ public class GameManager
     }
 
     private const float IgnorableValue = 0.001f;
-    private const KeyCode JumpButton = KeyCode.Space;
 
     private Player _player;
     private CameraController _cameraController;
@@ -53,6 +57,7 @@ public class GameManager
     private InputManager _inputManager;
     private UIManager _uiManager;
     private bool _isGameStarted;
+    private float _timeSinceStart;
 
     private void StartNewGame()
     {
@@ -61,6 +66,7 @@ public class GameManager
         _mapManager.CreateMap();
         _isGameStarted = true;
         _uiManager.EnterPlaymode();
+        _timeSinceStart = 0f;
     }
 
     private void Exit()

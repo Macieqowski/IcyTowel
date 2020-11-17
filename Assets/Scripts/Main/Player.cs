@@ -70,7 +70,7 @@ public class Player : MonoBehaviour
 
     protected void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("LevelFloor"))
+        if (collision.collider.CompareTag("LevelFloor") || collision.collider.CompareTag("Enemy"))
         {
             var contactPointNormal = collision.GetContact(0).normal;
             if (contactPointNormal.y < 0 || contactPointNormal.x != 0)

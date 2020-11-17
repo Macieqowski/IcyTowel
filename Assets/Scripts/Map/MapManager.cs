@@ -63,7 +63,7 @@ public class MapManager : MonoBehaviour
             if (shouldCreateEnemy)
             {
                 var xPos = Random.Range(0.2f, 0.9f);
-                var positionForEnemy = position + xPos * floorWidth * _levelFloorProvider.TileSize.x;
+                var positionForEnemy = position + xPos * floorWidth * _levelFloorProvider.TileSize.x - _levelFloorProvider.TileSize.x;
                 _floorObjects.Enqueue(Instantiate(_enemyPrefab, new Vector2(positionForEnemy, _currentGenerationYPosition + _levelFloorProvider.TileSize.y + 0.1f), Quaternion.identity));
             }
             _currentGenerationYPosition += _levelFloorProvider.TileSize.y;
